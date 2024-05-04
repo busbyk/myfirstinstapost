@@ -6,7 +6,15 @@ export async function getFirstPost({
   userId: string;
   accessToken: string;
   nextUrl?: string;
-}) {
+}): Promise<{
+  id: string;
+  media_type: string;
+  media_url: string;
+  thumbnail: string;
+  caption: string;
+  timestamp: string;
+  permalink: string;
+} | null> {
   console.log('fetching');
   const userMediaRes = await fetch(
     nextUrl ??
