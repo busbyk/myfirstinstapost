@@ -18,20 +18,25 @@ export type FirstPost = {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get('Cookie'));
-
   const auth = session.get('auth');
 
   if (!auth) {
-    // session flash?
+    // TODO session flash?
     return redirect('/');
   }
 
   const user = JSON.parse(auth);
 
+  const accessToken = await kv.get<string>(user.id);
+
+  if (!accessToken) {
+    // TODO session flash?
+    return redirect('/');
+  }
+
   const firstPostFromKv = await kv.get<FirstPost>(`${user.id}-first-post`);
 
   if (firstPostFromKv) {
-    console.log('got it from KV');
     return defer({
       firstPostPromise: Promise.resolve(firstPostFromKv),
       numPosts: user.mediaCount,
@@ -40,9 +45,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const firstPostPromise = getFirstPost({
     userId: user.id,
-    accessToken: user.access_token,
+    accessToken,
   }).then((firstPost) => {
-    kv.set(`${user.id}-first-post`, firstPost, { ex: 60 });
+    kv.set(`${user.id}-first-post`, firstPost, { ex: 60 * 10 }); // 10 minutes
     return firstPost;
   });
 

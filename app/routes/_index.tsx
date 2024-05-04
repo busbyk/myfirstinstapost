@@ -1,7 +1,11 @@
-import type { MetaFunction } from '@remix-run/node';
+import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import { Form } from '@remix-run/react';
 import qs from 'qs';
 import { redirect } from '@remix-run/node';
+import { getSession } from '~/auth';
+
+const INSTAGRAM_APP_ID = process.env.INSTAGRAM_APP_ID ?? '';
+const INSTAGRAM_REDIRECT_URI = process.env.INSTAGRAM_REDIRECT_URI ?? '';
 
 export const meta: MetaFunction = () => {
   return [
@@ -10,11 +14,26 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+export async function loader({ request }: LoaderFunctionArgs) {
+  const session = await getSession(request.headers.get('Cookie'));
+  const auth = session.get('auth');
+
+  if (!auth) {
+    return null;
+  }
+
+  const user = JSON.parse(auth);
+
+  if (user?.id) {
+    return redirect('/first-post');
+  }
+}
+
 export function action() {
   const baseUrl = 'https://api.instagram.com/oauth/authorize';
   const queryString = qs.stringify({
-    client_id: process.env.INSTAGRAM_APP_ID,
-    redirect_uri: process.env.INSTAGRAM_REDIRECT_URI,
+    client_id: INSTAGRAM_APP_ID,
+    redirect_uri: INSTAGRAM_REDIRECT_URI,
     scope: 'user_profile,user_media',
     response_type: 'code',
   });
