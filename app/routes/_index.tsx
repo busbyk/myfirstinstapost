@@ -1,41 +1,35 @@
-import type { MetaFunction } from "@remix-run/node";
+import type { MetaFunction } from '@remix-run/node';
+import { Form } from '@remix-run/react';
+import qs from 'qs';
+import { redirect } from '@remix-run/node';
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: 'MyFirstInstaPost' },
+    { name: 'description', content: 'Find your first Instagram post' },
   ];
 };
 
+export function action() {
+  const baseUrl = 'https://api.instagram.com/oauth/authorize';
+  const queryString = qs.stringify({
+    client_id: process.env.INSTAGRAM_APP_ID,
+    redirect_uri: process.env.INSTAGRAM_REDIRECT_URI,
+    scope: 'user_profile,user_media',
+    response_type: 'code',
+  });
+
+  return redirect(`${baseUrl}?${queryString}`);
+}
+
 export default function Index() {
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
-      <h1>Welcome to Remix</h1>
-      <ul>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/blog"
-            rel="noreferrer"
-          >
-            15m Quickstart Blog Tutorial
-          </a>
-        </li>
-        <li>
-          <a
-            target="_blank"
-            href="https://remix.run/tutorials/jokes"
-            rel="noreferrer"
-          >
-            Deep Dive Jokes App Tutorial
-          </a>
-        </li>
-        <li>
-          <a target="_blank" href="https://remix.run/docs" rel="noreferrer">
-            Remix Docs
-          </a>
-        </li>
-      </ul>
+    <div className="h-screen w-screen flex justify-center">
+      <h1 className="color-red-500">MyFirstInstaPost</h1>
+      <p>Find your first Instagram post.</p>
+      <Form method="post">
+        <button type="submit">Find it!</button>
+      </Form>
     </div>
   );
 }
