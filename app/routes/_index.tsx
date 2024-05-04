@@ -24,11 +24,18 @@ export function action() {
 
 export default function Index() {
   return (
-    <div className="h-screen w-screen flex justify-center">
-      <h1 className="color-red-500">MyFirstInstaPost</h1>
-      <p>Find your first Instagram post.</p>
+    <div className="h-screen w-screen flex flex-col items-center gap-8">
+      <div className="flex items-center flex-col gap-1">
+        <h1 className="text-center text-3xl font-bold">MyFirstInstaPost</h1>
+        <p>Find your first Instagram post.</p>
+      </div>
       <Form method="post">
-        <button type="submit">Find it!</button>
+        <button
+          type="submit"
+          className="border rounded-md px-6 py-2 bg-slate-700 text-white font-bold text-lg"
+        >
+          Find it!
+        </button>
       </Form>
     </div>
   );
