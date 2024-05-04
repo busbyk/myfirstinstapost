@@ -1,9 +1,20 @@
-import { LoaderFunctionArgs, defer, json, redirect } from '@remix-run/node';
+import { LoaderFunctionArgs, defer, redirect } from '@remix-run/node';
 import { Await, useLoaderData } from '@remix-run/react';
+import { kv } from '@vercel/kv';
 import { Suspense } from 'react';
 import { InstagramEmbed } from 'react-social-media-embed';
 import { getSession } from '~/auth';
 import { getFirstPost } from '~/instaApi';
+
+export type FirstPost = {
+  id: string;
+  media_type: string;
+  media_url: string;
+  thumbnail: string;
+  caption: string;
+  timestamp: string;
+  permalink: string;
+};
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get('Cookie'));
@@ -17,22 +28,23 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const user = JSON.parse(auth);
 
-  // const firstPostFromSession = session.get('firstPost');
+  const firstPostFromKv = await kv.get<FirstPost>(`${user.id}-first-post`);
 
-  // if (firstPostFromSession) {
-  //   console.log('got it from sesh');
-  //   return json({
-  //     firstPost: JSON.parse(firstPostFromSession),
-  //     numPosts: user.mediaCount,
-  //   });
-  // }
+  if (firstPostFromKv) {
+    console.log('got it from KV');
+    return defer({
+      firstPostPromise: Promise.resolve(firstPostFromKv),
+      numPosts: user.mediaCount,
+    });
+  }
 
   const firstPostPromise = getFirstPost({
     userId: user.id,
     accessToken: user.access_token,
+  }).then((firstPost) => {
+    kv.set(`${user.id}-first-post`, firstPost, { ex: 60 });
+    return firstPost;
   });
-
-  // session.set('firstPost', JSON.stringify(firstPost));
 
   return defer({ firstPostPromise, numPosts: user.mediaCount });
 }
