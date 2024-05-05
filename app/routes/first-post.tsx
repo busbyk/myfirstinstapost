@@ -9,8 +9,36 @@ import { kv } from '@vercel/kv';
 import { InstagramEmbed } from 'react-social-media-embed';
 import { getSession } from '~/auth';
 import { loader as postsLoader } from './api.posts';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import Polaroid from '~/components/Polaroid';
+import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion';
+
+const phrases = [
+  'Check this one out',
+  'Or this one',
+  "Oh, that's a nice one",
+  "Isn't this one amazing?",
+  "This one's really cool",
+  'How about this one?',
+  "This one's worth a look",
+  "Don't miss this one",
+  "This one's a gem",
+  "You'll love this one",
+  "This one's a keeper",
+  'Take a look at this one',
+  "This one's a showstopper",
+  "This one's a crowd pleaser",
+  "This one's a favorite",
+  "This one's a winner",
+  "This one's a masterpiece",
+  "This one's a beauty",
+  "This one's a stunner",
+  "This one's a dazzler",
+];
+
+function getRandomPhrase() {
+  return phrases[Math.floor(Math.random() * phrases.length)];
+}
 
 export type Media = {
   id: string;
@@ -77,6 +105,11 @@ export default function FirstPost() {
   const firstPost = data?.firstPost || firstPostFromCache;
   const intermediatePost = data?.intermediatePost;
 
+  const intermediatePostPhrase = useMemo(
+    () => getRandomPhrase(),
+    [intermediatePost]
+  );
+
   useEffect(() => {
     if (state === 'idle' && !data) {
       fetcher.load('/api/posts');
@@ -90,7 +123,9 @@ export default function FirstPost() {
       state === 'idle' &&
       data?.afterCursor
     ) {
-      fetcher.load(`/api/posts?afterCursor=${data.afterCursor}`);
+      setTimeout(() => {
+        fetcher.load(`/api/posts?afterCursor=${data.afterCursor}`);
+      }, 250);
     }
   }, [data?.afterCursor, fetcher, firstPost, intermediatePost, state]);
 
@@ -99,7 +134,7 @@ export default function FirstPost() {
       {!firstPost && (
         <div className="flex flex-col items-center gap-4">
           <h1 className="text-3xl font-bold text-center">
-            Loading your first post
+            Scrolling back to your first post
             <div className="animate-[bounce_1s_infinite] inline-block text-4xl ml-0.5">
               .
             </div>
@@ -113,16 +148,32 @@ export default function FirstPost() {
           {intermediatePost && (
             <div className="flex flex-col">
               <h2 className="text-2xl font-bold text-center">
-                Not this one... continuing to scroll
+                {intermediatePostPhrase}
               </h2>
               <div className="flex justify-center">
-                {intermediatePost?.permalink && (
-                  <Polaroid
-                    media={intermediatePost}
-                    key={intermediatePost?.id}
-                    width={300}
-                  />
-                )}
+                <LazyMotion features={domAnimation}>
+                  <AnimatePresence mode="wait">
+                    {intermediatePost?.permalink && (
+                      <m.div
+                        initial={{
+                          transform: 'translateX(-100%) rotate(-20deg)',
+                          opacity: 0,
+                        }}
+                        animate={{
+                          transform: 'translateX(0) rotate(0)',
+                          opacity: 1,
+                        }}
+                        exit={{
+                          transform: 'translateX(100%) rotate(20deg)',
+                          opacity: 0,
+                        }}
+                        key={intermediatePost?.id}
+                      >
+                        <Polaroid media={intermediatePost} width={300} />
+                      </m.div>
+                    )}
+                  </AnimatePresence>
+                </LazyMotion>
               </div>
             </div>
           )}

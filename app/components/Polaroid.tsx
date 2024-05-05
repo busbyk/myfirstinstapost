@@ -14,7 +14,7 @@ export default function Polaroid({
       href={permalink}
       target="_blank"
       rel="noreferrer"
-      className="shadow-xl bg-white rounded px-4 pt-7 gap-4 flex flex-col"
+      className="shadow-xl bg-white rounded px-4 pt-7 gap-4 flex flex-col border"
       style={{
         width: `${width}px`,
       }}
