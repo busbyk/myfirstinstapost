@@ -19,6 +19,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body className="p-4">
         {children}
         <ScrollRestoration />
+        {process.env.NODE_ENV === 'production' && (
+          <script
+            defer
+            src="/stats/js/script.js"
+            data-api="/stats/api/event"
+            data-domain="myfirstinstapost.com"
+          ></script>
+        )}
         <Scripts />
       </body>
     </html>
