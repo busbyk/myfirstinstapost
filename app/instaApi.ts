@@ -1,3 +1,5 @@
+import { Media } from './routes/first-post';
+
 export async function getFirstPost({
   userId,
   accessToken,
@@ -39,6 +41,35 @@ export async function getFirstPost({
   const next = paging.next;
 
   return getFirstPost({ userId, accessToken, nextUrl: next });
+}
+
+export async function getUserMedia({
+  userId,
+  accessToken,
+  afterCursor,
+}: {
+  userId: string;
+  accessToken: string;
+  afterCursor?: string | null;
+}): Promise<{
+  data: Media[];
+  afterCursor: string | null;
+  hasMore: boolean;
+}> {
+  const userMediaRes = await fetch(
+    `https://graph.instagram.com/${userId}/media?fields=id,media_type,media_url,thumbnail_url,caption,timestamp,permalink&access_token=${accessToken}&limit=100${
+      afterCursor ? `&after=${afterCursor}` : ''
+    }`
+  );
+
+  const json = await userMediaRes.json();
+  const { data, paging } = json;
+
+  return {
+    data,
+    afterCursor: paging?.cursors?.after,
+    hasMore: !!paging?.next,
+  };
 }
 
 export async function getMediaDetail({
