@@ -14,6 +14,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const user = JSON.parse(auth);
 
   await kv.set(user.id, null);
+  await kv.set(`${user.id}-first-post`, null);
 
   return redirect('/', {
     headers: {
