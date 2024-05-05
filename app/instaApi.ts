@@ -47,17 +47,19 @@ export async function getUserMedia({
   userId,
   accessToken,
   afterCursor,
+  limit = 100,
 }: {
   userId: string;
   accessToken: string;
   afterCursor?: string | null;
+  limit?: number;
 }): Promise<{
   data: Media[];
   afterCursor: string | null;
   hasMore: boolean;
 }> {
   const userMediaRes = await fetch(
-    `https://graph.instagram.com/${userId}/media?fields=id,media_type,media_url,thumbnail_url,caption,timestamp,permalink&access_token=${accessToken}&limit=100${
+    `https://graph.instagram.com/${userId}/media?fields=id,media_type,media_url,thumbnail_url,caption,timestamp,permalink&access_token=${accessToken}&limit=${limit}${
       afterCursor ? `&after=${afterCursor}` : ''
     }`
   );

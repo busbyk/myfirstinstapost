@@ -9,9 +9,15 @@ const INSTAGRAM_REDIRECT_URI = process.env.INSTAGRAM_REDIRECT_URI ?? '';
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const code = url.searchParams.get('code');
+  const error = url.searchParams.get('error');
+  const errorReason = url.searchParams.get('error_reason');
 
   if (!code) {
-    return new Response('No code found', { status: 400 });
+    if (error) {
+      return redirect(`/?authError=${errorReason}`);
+    } else {
+      return new Response('No code found', { status: 400 });
+    }
   }
 
   const formData = new FormData();
@@ -22,37 +28,46 @@ export async function loader({ request }: LoaderFunctionArgs) {
   formData.append('redirect_uri', INSTAGRAM_REDIRECT_URI);
   formData.append('code', code);
 
-  const res = await fetch('https://api.instagram.com/oauth/access_token', {
-    method: 'POST',
-    body: formData,
-  });
+  try {
+    const res = await fetch('https://api.instagram.com/oauth/access_token', {
+      method: 'POST',
+      body: formData,
+    });
 
-  const data = await res.json();
-  const { access_token, user_id } = data;
+    const data = await res.json();
+    const { access_token, user_id } = data;
 
-  const userRes = await fetch(
-    `https://graph.instagram.com/${user_id}?fields=id,username,media_count&access_token=${access_token}`
-  );
+    if (!access_token || !user_id) {
+      return redirect('/?authError=server_error');
+    }
 
-  const userData = await userRes.json();
+    const userRes = await fetch(
+      `https://graph.instagram.com/${user_id}?fields=id,username,media_count&access_token=${access_token}`
+    );
 
-  const session = await getSession(request.headers.get('Cookie'));
+    const userData = await userRes.json();
 
-  const user = {
-    id: userData.id,
-    username: userData.username,
-    mediaCount: userData.media_count,
-  };
+    const session = await getSession(request.headers.get('Cookie'));
 
-  session.set('auth', JSON.stringify(user));
+    const user = {
+      id: userData.id,
+      username: userData.username,
+      mediaCount: userData.media_count,
+    };
 
-  kv.set(user.id, access_token);
+    session.set('auth', JSON.stringify(user));
 
-  return redirect('/first-post', {
-    headers: {
-      'Set-Cookie': await commitSession(session, {
-        expires: new Date(Date.now() + 1000 * 60 * 30), // 30 minutes
-      }),
-    },
-  });
+    kv.set(user.id, access_token);
+
+    return redirect('/first-post', {
+      headers: {
+        'Set-Cookie': await commitSession(session, {
+          expires: new Date(Date.now() + 1000 * 60 * 30), // 30 minutes
+        }),
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return redirect('/?error=unknown_error');
+  }
 }

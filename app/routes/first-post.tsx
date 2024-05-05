@@ -107,6 +107,7 @@ export default function FirstPost() {
 
   const intermediatePostPhrase = useMemo(
     () => getRandomPhrase(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [intermediatePost]
   );
 

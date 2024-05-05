@@ -35,10 +35,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const afterCursor = url.searchParams.get('afterCursor');
 
+  const limitForAtLeastFourPosts =
+    user.mediaCount >= 4 ? user.mediaCount / 4 : user.mediaCount;
+  const limit = limitForAtLeastFourPosts > 100 ? 100 : limitForAtLeastFourPosts;
   const userMediaData = await getUserMedia({
     userId: user.id,
     accessToken,
     afterCursor,
+    limit,
   });
   const { hasMore } = userMediaData;
 
