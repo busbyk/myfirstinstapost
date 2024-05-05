@@ -6,7 +6,6 @@ import {
   ScrollRestoration,
 } from '@remix-run/react';
 import './tailwind.css';
-import { SpeedInsights } from '@vercel/speed-insights/remix';
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -29,7 +28,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
           ></script>
         )}
         <Scripts />
-        <SpeedInsights />
       </body>
     </html>
   );
