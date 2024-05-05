@@ -192,18 +192,12 @@ export default function FirstPost() {
                 type="submit"
                 className="border rounded-md px-3 py-1 bg-white text-xs"
               >
-                Let{"'"}s scroll through again 😊!
+                Let{"'"}s scroll through again!
               </button>
             </form>
           </div>
           <div className="flex justify-center">
-            {firstPost?.permalink && (
-              <InstagramEmbed
-                url={firstPost?.permalink}
-                width={400}
-                captioned
-              />
-            )}
+            <Polaroid media={firstPost} width={400} />
           </div>
         </>
       )}

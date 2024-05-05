@@ -19,16 +19,16 @@ export default function Polaroid({
         width: `${width}px`,
       }}
     >
-      <figure>
+      <figure className="shadow-inner">
         <img
           className="w-full"
           src={thumbnail_url ?? media_url}
           alt={caption}
         />
       </figure>
-      <div className="flex px-4 pb-4">
+      <div className="flex px-2 pb-4">
         {caption && (
-          <p>
+          <p className="text-sm">
             {caption.substring(0, 200)}
             {caption.length > 200 ? '...' : ''}
           </p>
