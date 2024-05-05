@@ -51,7 +51,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const randomPost = userMediaData.data[randomIndex];
 
   if (!hasMore && lastPostInList) {
-    await kv.set(`${user.id}-first-post`, lastPostInList);
+    await kv.set(`${user.id}-first-post`, lastPostInList, { ex: 60 * 30 }); // 30 minutes
   }
 
   return json({

@@ -59,18 +59,37 @@ export default function Index() {
   const authError = loaderData?.authError;
 
   return (
-    <div className="h-screen w-screen flex flex-col items-center gap-8">
-      <div className="flex items-center flex-col gap-1">
-        <h1 className="text-center text-3xl font-bold">MyFirstInstaPost</h1>
-        <p>Find your first Instagram post.</p>
+    <div className="flex flex-col gap-20 pt-8 px-8 items-center">
+      <div className="flex flex-col gap-8">
+        <div className="w-full">
+          <h1 className="text-5xl font-bold">
+            Find Your <br />
+            First Post
+            <br /> On Instagram
+          </h1>
+        </div>
+        <div className="flex flex-col gap-2">
+          <p>
+            Scrolling through your whole feed to find your first post can be a
+            pain.
+          </p>
+          <p>
+            We{"'"} scroll through for you and take a stroll down memory lane
+            while we{"'"}re at it.
+          </p>
+        </div>
       </div>
-      <Form method="post">
+      <Form method="post" className="flex flex-col gap-2 w-fit">
         <button
           type="submit"
-          className="border rounded-md px-6 py-2 bg-slate-700 text-white font-bold text-lg"
+          className="border-theme-burgundy border rounded-md px-12 py-4 bg-theme-blue text-white font-bold text-2xl"
         >
-          Let{"'"}s find it 🚀
+          Let{"'"}s find it <span className="ml-1">🚀</span>
         </button>
+        <p className="text-xs max-w-max mx-auto text-gray-700">
+          This will redirect you to Instagram to grant <br />
+          us permission to scroll through your feed.
+        </p>
       </Form>
       {authError && authError === 'user_denied' && (
         <p className="text-red-500 text-center mx-auto max-w-1/2">

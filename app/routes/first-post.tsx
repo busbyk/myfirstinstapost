@@ -131,9 +131,9 @@ export default function FirstPost() {
   }, [data?.afterCursor, fetcher, firstPost, intermediatePost, state]);
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col pt-8 px-8 gap-12">
       {!firstPost && (
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-6">
           <h1 className="text-3xl font-bold text-center">
             Scrolling back to your first post
             <div className="animate-[bounce_1s_infinite] inline-block text-4xl ml-0.5">
@@ -147,8 +147,8 @@ export default function FirstPost() {
             </div>
           </h1>
           {intermediatePost && (
-            <div className="flex flex-col">
-              <h2 className="text-2xl font-bold text-center">
+            <div className="flex flex-col gap-3">
+              <h2 className="text-xl font-bold text-center">
                 {intermediatePostPhrase}
               </h2>
               <div className="flex justify-center">
@@ -184,13 +184,18 @@ export default function FirstPost() {
       {firstPost && (
         <>
           <div className="flex flex-col gap-2">
-            <h1 className="text-3xl font-bold text-center">
-              Your First Post of {numPosts} Post{numPosts > 1 ? 's' : ''}
-            </h1>
+            <div className="flex flex-col ">
+              <h1 className="text-5xl font-bold text-center">
+                Your First Post
+              </h1>
+              <p className="text-sm text-center">
+                of {numPosts} Post{numPosts > 1 ? 's' : ''}
+              </p>
+            </div>
             <form method="post" className="flex justify-center">
               <button
                 type="submit"
-                className="border rounded-md px-3 py-1 bg-white text-xs"
+                className="border border-theme-burgundy rounded-md px-3 py-1 bg-white text-xs"
               >
                 Let{"'"}s scroll through again!
               </button>

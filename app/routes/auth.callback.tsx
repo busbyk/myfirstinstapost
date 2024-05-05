@@ -57,7 +57,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     session.set('auth', JSON.stringify(user));
 
-    kv.set(user.id, access_token);
+    kv.set(user.id, access_token, { ex: 60 * 30 }); // 30 minutes
 
     return redirect('/first-post', {
       headers: {
@@ -70,4 +70,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
     console.error(error);
     return redirect('/?error=unknown_error');
   }
+}
+
+export default function AuthCallback() {
+  return <div />;
 }
