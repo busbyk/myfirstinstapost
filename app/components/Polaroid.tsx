@@ -3,9 +3,13 @@ import { Media } from '~/routes/first-post';
 export default function Polaroid({
   media,
   width,
+  captionLength = 200,
+  captionTextClassName,
 }: {
   media: Media;
   width: number;
+  captionLength?: number;
+  captionTextClassName?: string;
 }) {
   const { thumbnail_url, media_url, caption, permalink } = media;
 
@@ -28,9 +32,9 @@ export default function Polaroid({
       </figure>
       <div className="flex px-2 pb-6 pt-2">
         {caption && (
-          <p className="">
-            {caption.substring(0, 200)}
-            {caption.length > 200 ? '...' : ''}
+          <p className={captionTextClassName ?? ''}>
+            {caption.substring(0, captionLength)}
+            {caption.length > captionLength ? '...' : ''}
           </p>
         )}
       </div>

@@ -9,7 +9,7 @@ import { kv } from '@vercel/kv';
 import { InstagramEmbed } from 'react-social-media-embed';
 import { getSession } from '~/auth';
 import { loader as postsLoader } from './api.posts';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Polaroid from '~/components/Polaroid';
 import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion';
 
@@ -111,6 +111,8 @@ export default function FirstPost() {
     [intermediatePost]
   );
 
+  const [intermediatePosts, setIntermediatePosts] = useState<Media[]>([]);
+
   useEffect(() => {
     if (state === 'idle' && !data) {
       fetcher.load('/api/posts');
@@ -130,8 +132,25 @@ export default function FirstPost() {
     }
   }, [data?.afterCursor, fetcher, firstPost, intermediatePost, state]);
 
+  useEffect(
+    function captureIntermediatePosts() {
+      if (intermediatePost) {
+        const intermediatePostExists = intermediatePosts.some(
+          (post) => post.id === intermediatePost.id
+        );
+
+        if (intermediatePostExists) {
+          return;
+        }
+
+        setIntermediatePosts((prev) => [...prev, intermediatePost]);
+      }
+    },
+    [intermediatePost, intermediatePosts]
+  );
+
   return (
-    <div className="flex flex-col pt-8 px-8 gap-12">
+    <div className="flex flex-col py-8 px-8 gap-12">
       {!firstPost && (
         <div className="flex flex-col items-center gap-6">
           <h1 className="text-3xl font-bold text-center">
@@ -201,8 +220,23 @@ export default function FirstPost() {
               </button>
             </form>
           </div>
-          <div className="flex justify-center">
+          <div className="flex flex-col items-center gap-1.5">
             <Polaroid media={firstPost} width={400} />
+            {intermediatePosts.length > 0 && (
+              <p className="text-xs text-center">Memories 👇</p>
+            )}
+          </div>
+          <div className="flex justify-center gap-3 flex-wrap">
+            {intermediatePosts.map((post) => (
+              <div key={post.id}>
+                <Polaroid
+                  media={post}
+                  width={150}
+                  captionLength={80}
+                  captionTextClassName="text-xs"
+                />
+              </div>
+            ))}
           </div>
         </>
       )}
