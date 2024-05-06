@@ -19,8 +19,7 @@
     "isbot": "^4.1.0",
     "qs": "^6.12.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-social-media-embed": "^2.5.13"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.9.1",

@@ -6,7 +6,6 @@ import {
 } from '@remix-run/node';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 import { kv } from '@vercel/kv';
-import { InstagramEmbed } from 'react-social-media-embed';
 import { getSession } from '~/auth';
 import { loader as postsLoader } from './api.posts';
 import { useEffect, useMemo, useState } from 'react';
