@@ -55,7 +55,7 @@ export default function TermsOfService() {
       <h2>8. Contact Us</h2>
       <p>
         If you have any questions or concerns about these Terms, please contact
-        us at myfirstinstapost@gmail.com.
+        us at myfirstinstapostdev@gmail.com.
       </p>
     </div>
   );

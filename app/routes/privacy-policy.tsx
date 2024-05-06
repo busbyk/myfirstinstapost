@@ -69,7 +69,7 @@ export default function PrivacyPolicy() {
       <h2>Contact Us</h2>
       <p>
         If you have any questions or concerns about this Privacy Policy, please
-        contact us at myfirstinstapost@gmail.com.
+        contact us at myfirstinstapostdev@gmail.com.
       </p>
     </div>
   );
