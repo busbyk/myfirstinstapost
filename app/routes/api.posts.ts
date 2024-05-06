@@ -36,27 +36,33 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const afterCursor = url.searchParams.get('afterCursor');
 
   const limitForAtLeastFourPosts =
-    user.mediaCount >= 4 ? user.mediaCount / 4 : user.mediaCount;
+    user.mediaCount >= 4 ? Math.floor(user.mediaCount / 4) : user.mediaCount;
   const limit = limitForAtLeastFourPosts > 100 ? 100 : limitForAtLeastFourPosts;
-  const userMediaData = await getUserMedia({
-    userId: user.id,
-    accessToken,
-    afterCursor,
-    limit,
-  });
-  const { hasMore } = userMediaData;
 
-  const lastPostInList = userMediaData.data[userMediaData.data.length - 1];
-  const randomIndex = Math.floor(Math.random() * userMediaData.data.length);
-  const randomPost = userMediaData.data[randomIndex];
+  try {
+    const userMediaData = await getUserMedia({
+      userId: user.id,
+      accessToken,
+      afterCursor,
+      limit,
+    });
+    const { hasMore } = userMediaData;
 
-  if (!hasMore && lastPostInList) {
-    await kv.set(`${user.id}-first-post`, lastPostInList, { ex: 60 * 30 }); // 30 minutes
+    const lastPostInList = userMediaData.data[userMediaData.data.length - 1];
+    const randomIndex = Math.floor(Math.random() * userMediaData.data.length);
+    const randomPost = userMediaData.data[randomIndex];
+
+    if (!hasMore && lastPostInList) {
+      await kv.set(`${user.id}-first-post`, lastPostInList, { ex: 60 * 30 }); // 30 minutes
+    }
+
+    return json({
+      firstPost: !hasMore ? lastPostInList : null,
+      intermediatePost: hasMore ? randomPost : null,
+      afterCursor: hasMore ? userMediaData.afterCursor : null,
+    });
+  } catch (error) {
+    console.error(error);
+    throw new Error('Failed to fetch user media');
   }
-
-  return json({
-    firstPost: !hasMore ? lastPostInList : null,
-    intermediatePost: hasMore ? randomPost : null,
-    afterCursor: hasMore ? userMediaData.afterCursor : null,
-  });
 }

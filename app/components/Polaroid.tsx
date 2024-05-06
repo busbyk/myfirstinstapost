@@ -14,7 +14,7 @@ export default function Polaroid({
       href={permalink}
       target="_blank"
       rel="noreferrer"
-      className="shadow-xl bg-white rounded px-4 pt-7 gap-4 flex flex-col border"
+      className="shadow-xl bg-white px-4 pt-7 gap-4 flex flex-col border border-theme-burgundy"
       style={{
         width: `${width}px`,
       }}
@@ -26,9 +26,9 @@ export default function Polaroid({
           alt={caption}
         />
       </figure>
-      <div className="flex px-2 pb-4">
+      <div className="flex px-2 pb-6 pt-2">
         {caption && (
-          <p className="text-sm">
+          <p className="">
             {caption.substring(0, 200)}
             {caption.length > 200 ? '...' : ''}
           </p>

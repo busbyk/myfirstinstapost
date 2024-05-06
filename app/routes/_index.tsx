@@ -62,27 +62,27 @@ export default function Index() {
     <div className="flex flex-col gap-20 pt-8 px-8 items-center">
       <div className="flex flex-col gap-8">
         <div className="w-full">
-          <h1 className="text-5xl font-bold">
-            Find Your <br />
-            First Post
-            <br /> On Instagram
+          <h1 className="text-5xl sm:text-7xl font-bold">
+            Find Your <br className="sm:hidden" />
+            First <br className="hidden sm:inline" /> Post
+            <br className="sm:hidden" /> On Instagram
           </h1>
         </div>
         <div className="flex flex-col gap-2">
           <p>
-            Scrolling through your whole feed to find your first post can be a
-            pain.
+            Scrolling through your whole feed to find your first post can be
+            annoying 😴
           </p>
           <p>
-            We{"'"} scroll through for you and take a stroll down memory lane
-            while we{"'"}re at it.
+            We{"'"}ll scroll through for you and take a stroll down memory lane
+            while we{"'"}re at it!
           </p>
         </div>
       </div>
       <Form method="post" className="flex flex-col gap-2 w-fit">
         <button
           type="submit"
-          className="border-theme-burgundy border rounded-md px-12 py-4 bg-theme-blue text-white font-bold text-2xl"
+          className="border-theme-burgundy border rounded-md px-12 py-4 bg-theme-blue text-white font-bold text-2xl sm:text-4xl"
         >
           Let{"'"}s find it <span className="ml-1">🚀</span>
         </button>

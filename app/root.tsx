@@ -5,8 +5,38 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  isRouteErrorResponse,
+  useRouteError,
 } from '@remix-run/react';
 import './tailwind.css';
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div>
+        <h1>Something has gone horribly wrong. Frick.</h1>
+        <p>Error: {error.status}</p>
+        <p>{error.data.message}</p>
+      </div>
+    );
+  }
+
+  let errorMessage = 'Unknown error';
+  if (error instanceof Error) {
+    errorMessage = error.message;
+  }
+
+  return (
+    <div className="flex flex-col flex-grow justify-center items-center pt-8 w-full">
+      <h1 className="text-2xl font-bold">
+        Something has gone horribly wrong. Frick.
+      </h1>
+      <p className="text-red-500">Error: {errorMessage}</p>
+    </div>
+  );
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (

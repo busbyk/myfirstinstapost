@@ -65,7 +65,11 @@ export async function getUserMedia({
   );
 
   const json = await userMediaRes.json();
-  const { data, paging } = json;
+  const { data, paging, error } = json;
+
+  if (error) {
+    throw new Error(error.message);
+  }
 
   return {
     data,

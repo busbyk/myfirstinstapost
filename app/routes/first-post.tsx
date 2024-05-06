@@ -126,7 +126,7 @@ export default function FirstPost() {
     ) {
       setTimeout(() => {
         fetcher.load(`/api/posts?afterCursor=${data.afterCursor}`);
-      }, 250);
+      }, 350);
     }
   }, [data?.afterCursor, fetcher, firstPost, intermediatePost, state]);
 
