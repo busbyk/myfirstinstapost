@@ -84,6 +84,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
           content="https://myfirstinstapost.com/og-preview.png"
         />
 
+        <meta name="google-adsense-account" content="ca-pub-9888054958355394" />
+
         <Meta />
         <Links />
       </head>
