@@ -103,6 +103,22 @@ export default function Index() {
           that.
         </p>
       )}
+      {authError && authError === 'permissions_error' && (
+        <div className="flex flex-col gap-2">
+          <p className="text-red-500 text-center mx-auto max-w-1/2">
+            It looks like you didn{"'"}t grant us permission to scroll through
+            your posts.
+          </p>
+          <p className="text-red-500 text-center mx-auto max-w-1/2">
+            If this was by mistake and you want to try again, make sure you have
+            the{' '}
+            <span className="font-bold text-lg">
+              {'"'}Content (Optional){'"'}
+            </span>{' '}
+            permission checked.
+          </p>
+        </div>
+      )}
       {error && (
         <p className="text-red-500 text-center mx-auto max-w-1/2">
           Something went wrong. Please try again.

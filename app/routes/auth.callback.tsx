@@ -45,14 +45,21 @@ export async function loader({ request }: LoaderFunctionArgs) {
       `https://graph.instagram.com/${user_id}?fields=id,username,media_count&access_token=${access_token}`
     );
 
-    const userData = await userRes.json();
+    const { id, username, media_count, error } = await userRes.json();
+
+    if (error) {
+      if (error.code === 10) {
+        return redirect('/?authError=permissions_error');
+      }
+      return redirect('/?authError=server_error');
+    }
 
     const session = await getSession(request.headers.get('Cookie'));
 
     const user = {
-      id: userData.id,
-      username: userData.username,
-      mediaCount: userData.media_count,
+      id,
+      username,
+      mediaCount: media_count,
     };
 
     session.set('auth', JSON.stringify(user));
