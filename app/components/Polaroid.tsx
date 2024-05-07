@@ -5,11 +5,13 @@ export default function Polaroid({
   width,
   captionLength = 200,
   captionTextClassName,
+  className,
 }: {
   media: Media;
   width: number;
   captionLength?: number;
   captionTextClassName?: string;
+  className?: string;
 }) {
   const { thumbnail_url, media_url, caption, permalink } = media;
 
@@ -18,7 +20,9 @@ export default function Polaroid({
       href={permalink}
       target="_blank"
       rel="noreferrer"
-      className="shadow-xl bg-white px-4 pt-7 gap-4 flex flex-col border border-theme-burgundy"
+      className={`${
+        className ? `${className} ` : ''
+      }shadow-xl bg-white px-4 pt-7 gap-4 flex flex-col border border-theme-burgundy`}
       style={{
         width: `${width}px`,
       }}

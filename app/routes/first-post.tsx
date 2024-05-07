@@ -142,14 +142,14 @@ export default function FirstPost() {
           return;
         }
 
-        setIntermediatePosts((prev) => [...prev, intermediatePost]);
+        setIntermediatePosts((prev) => [intermediatePost, ...prev]);
       }
     },
     [intermediatePost, intermediatePosts]
   );
 
   return (
-    <div className="flex flex-col py-8 px-8 gap-12">
+    <div className="flex flex-col sm:py-8 sm:px-8 py-6 px-4 sm:gap-12 gap-8">
       {!firstPost && (
         <div className="flex flex-col items-center gap-6">
           <h1 className="text-3xl font-bold text-center">
@@ -188,7 +188,11 @@ export default function FirstPost() {
                         }}
                         key={intermediatePost?.id}
                       >
-                        <Polaroid media={intermediatePost} width={300} />
+                        <Polaroid
+                          media={intermediatePost}
+                          width={300}
+                          className="max-w-full"
+                        />
                       </m.div>
                     )}
                   </AnimatePresence>
@@ -220,7 +224,7 @@ export default function FirstPost() {
             </form>
           </div>
           <div className="flex flex-col items-center gap-1.5">
-            <Polaroid media={firstPost} width={400} />
+            <Polaroid media={firstPost} width={400} className="max-w-full" />
             {intermediatePosts.length > 0 && (
               <p className="text-xs text-center">Memories 👇</p>
             )}
@@ -233,6 +237,7 @@ export default function FirstPost() {
                   width={150}
                   captionLength={80}
                   captionTextClassName="text-xs"
+                  className="max-w-full"
                 />
               </div>
             ))}
