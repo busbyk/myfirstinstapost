@@ -9,6 +9,16 @@ import {
   useRouteError,
 } from '@remix-run/react';
 import './tailwind.css';
+import { LinksFunction } from '@remix-run/node';
+
+export const links: LinksFunction = () => [
+  {
+    rel: 'icon',
+    type: 'image/png',
+    sizes: '16x16',
+    href: '/icons/favicon-16x16.png',
+  },
+];
 
 export function ErrorBoundary() {
   const error = useRouteError();
@@ -45,6 +55,35 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="manifest" href="manifest.json" />
+
+        <title>MyFirstInstaPost</title>
+        <meta name="description" content="Find your first Instagram post" />
+
+        <meta property="og:url" content="https://myfirstinstapost.com" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="MyFirstInstaPost" />
+        <meta
+          property="og:description"
+          content="Find your first Instagram post"
+        />
+        <meta
+          property="og:image"
+          content="https://myfirstinstapost.com/og-preview.png"
+        />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="twitter:domain" content="myfirstinstapost.com" />
+        <meta property="twitter:url" content="https://myfirstinstapost.com" />
+        <meta name="twitter:title" content="MyFirstInstaPost" />
+        <meta
+          name="twitter:description"
+          content="Find your first Instagram post"
+        />
+        <meta
+          name="twitter:image"
+          content="https://myfirstinstapost.com/og-preview.png"
+        />
+
         <Meta />
         <Links />
       </head>
