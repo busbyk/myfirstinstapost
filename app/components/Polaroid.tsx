@@ -22,7 +22,7 @@ export default function Polaroid({
       rel="noreferrer"
       className={`${
         className ? `${className} ` : ''
-      }shadow-xl bg-white px-4 pt-7 gap-4 flex flex-col border border-theme-burgundy`}
+      }shadow-xl bg-white px-4 pt-7 gap-4 flex flex-col border border-theme-burgundy overflow-hidden`}
       style={{
         width: `${width}px`,
       }}

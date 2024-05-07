@@ -125,11 +125,21 @@ export default function FirstPost() {
       state === 'idle' &&
       data?.afterCursor
     ) {
-      setTimeout(() => {
-        fetcher.load(`/api/posts?afterCursor=${data.afterCursor}`);
-      }, 350);
+      setTimeout(
+        () => {
+          fetcher.load(`/api/posts?afterCursor=${data.afterCursor}`);
+        },
+        Math.floor(numPosts / 4) < 50 ? 1000 : 350
+      );
     }
-  }, [data?.afterCursor, fetcher, firstPost, intermediatePost, state]);
+  }, [
+    data?.afterCursor,
+    fetcher,
+    firstPost,
+    intermediatePost,
+    numPosts,
+    state,
+  ]);
 
   useEffect(
     function captureIntermediatePosts() {
