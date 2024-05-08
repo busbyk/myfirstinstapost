@@ -48,6 +48,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const { id, username, media_count, error } = await userRes.json();
 
     if (error) {
+      console.error(
+        `Error fetching user profile: ${error.message}. Code: ${error.code}.`
+      );
+      console.error(error);
       if (error.code === 10) {
         return redirect('/?authError=permissions_error');
       }
