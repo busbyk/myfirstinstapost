@@ -103,6 +103,12 @@ export default function Index() {
           that.
         </p>
       )}
+      {authError && authError === 'instagram_is_transient_error' && (
+        <p className="text-red-500 text-center mx-auto max-w-1/2">
+          Instagram sent back an undocumented error requesting you to try again
+          later 🤦‍♂️
+        </p>
+      )}
       {authError && authError === 'permissions_error' && (
         <div className="flex flex-col gap-2">
           <p className="text-red-500 text-center mx-auto max-w-1/2">

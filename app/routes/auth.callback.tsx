@@ -55,6 +55,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
       if (error.code === 10) {
         return redirect('/?authError=permissions_error');
       }
+      if (error.code === 2) {
+        return redirect('/?authError=instagram_is_transient_error');
+      }
       return redirect('/?authError=server_error');
     }
 
