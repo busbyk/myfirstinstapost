@@ -52,8 +52,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
         `Error fetching user profile: ${error.message}. Code: ${error.code}.`
       );
       console.error(error);
-      console.error('User ID:', user_id);
-      console.error('Access token:', access_token);
       if (error.code === 10) {
         return redirect('/?authError=permissions_error');
       }
