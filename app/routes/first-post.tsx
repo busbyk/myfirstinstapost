@@ -61,16 +61,24 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const user = JSON.parse(auth);
 
-  const accessToken = await kv.get<string>(user.id);
+  const accessToken = decrypt((await kv.get<string>(user.id)) || '');
 
   if (!accessToken) {
     // TODO session flash?
     return redirect('/');
   }
 
-  const firstPostFromKv = JSON.parse(
-    decrypt((await kv.get<string>(`${user.id}-first-post`)) || '')
-  ) as Media;
+  const encryptedVal = await kv.get<string>(`${user.id}-first-post`);
+
+  if (!encryptedVal) {
+    return json({
+      firstPostFromCache: null,
+      numPosts: user.mediaCount,
+    });
+  }
+
+  const decryptedVal = decrypt(encryptedVal);
+  const firstPostFromKv = JSON.parse(decryptedVal) as Media;
 
   if (firstPostFromKv) {
     return json({

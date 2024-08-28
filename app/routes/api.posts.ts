@@ -23,16 +23,19 @@ export async function loader({ request }: LoaderFunctionArgs) {
     return redirect('/');
   }
 
-  const firstPostFromKv = JSON.parse(
-    decrypt((await kv.get<string>(`${user.id}-first-post`)) || '')
-  ) as Media;
+  const encryptedVal = await kv.get<string>(`${user.id}-first-post`);
 
-  if (firstPostFromKv) {
-    return json({
-      firstPost: firstPostFromKv,
-      intermediatePost: null,
-      afterCursor: null,
-    });
+  if (encryptedVal) {
+    const decryptedVal = decrypt(encryptedVal);
+    const firstPostFromKv = JSON.parse(decryptedVal) as Media;
+
+    if (firstPostFromKv) {
+      return json({
+        firstPost: firstPostFromKv,
+        intermediatePost: null,
+        afterCursor: null,
+      });
+    }
   }
 
   const url = new URL(request.url);
