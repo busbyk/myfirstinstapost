@@ -6,11 +6,12 @@ import {
 } from '@remix-run/node';
 import { useFetcher, useLoaderData } from '@remix-run/react';
 import { kv } from '@vercel/kv';
-import { getSession } from '~/auth';
+import { getSession } from '~/auth.server';
 import { loader as postsLoader } from './api.posts';
 import { useEffect, useMemo, useState } from 'react';
 import Polaroid from '~/components/Polaroid';
 import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion';
+import { decrypt } from '~/crypto.server';
 
 const phrases = [
   'Check this one out',
@@ -67,7 +68,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
     return redirect('/');
   }
 
-  const firstPostFromKv = await kv.get<Media>(`${user.id}-first-post`);
+  const firstPostFromKv = JSON.parse(
+    decrypt((await kv.get<string>(`${user.id}-first-post`)) || '')
+  ) as Media;
 
   if (firstPostFromKv) {
     return json({

@@ -1,6 +1,7 @@
 import { LoaderFunctionArgs, redirect } from '@remix-run/node';
 import { kv } from '@vercel/kv';
-import { commitSession, getSession } from '~/auth';
+import { commitSession, getSession } from '~/auth.server';
+import { encrypt } from '~/crypto.server';
 
 const INSTAGRAM_APP_ID = process.env.INSTAGRAM_APP_ID ?? '';
 const INSTAGRAM_APP_SECRET = process.env.INSTAGRAM_APP_SECRET ?? '';
@@ -71,7 +72,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     session.set('auth', JSON.stringify(user));
 
-    kv.set(user.id, access_token, { ex: 60 * 30 }); // 30 minutes
+    kv.set(user.id, encrypt(access_token), { ex: 60 * 30 }); // 30 minutes
 
     return redirect('/first-post', {
       headers: {

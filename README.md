@@ -1,36 +1,15 @@
-# Welcome to Remix + Vite!
+# myfirstinstapost
 
-📖 See the [Remix docs](https://remix.run/docs) and the [Remix Vite docs](https://remix.run/docs/en/main/guides/vite) for details on supported features.
+Remix app
+No DB
+Meta app
 
-## Development
+## Meta app
 
-Run the Vite dev server:
+https://developers.facebook.com/apps/680027463781126/dashboard/?business_id=1655332768568832
 
-```shellscript
-npm run dev
-```
+## Getting Started
 
-## Deployment
-
-First, build your app for production:
-
-```sh
-npm run build
-```
-
-Then run the app in production mode:
-
-```sh
-npm start
-```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-- `build/server`
-- `build/client`
+`ngrok http 5173`
+update valid app urls in Meta portal and .env file
+`npm run dev`

@@ -8,7 +8,7 @@ import {
   isRouteErrorResponse,
   useRouteError,
 } from '@remix-run/react';
-import './tailwind.css';
+import '~/tailwind.css';
 import { LinksFunction } from '@remix-run/node';
 
 export const links: LinksFunction = () => [

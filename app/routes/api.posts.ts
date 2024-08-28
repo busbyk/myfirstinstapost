@@ -1,8 +1,9 @@
 import { LoaderFunctionArgs, redirect, json } from '@remix-run/node';
 import { kv } from '@vercel/kv';
-import { getSession } from '~/auth';
-import { getUserMedia } from '~/instaApi';
+import { getSession } from '~/auth.server';
+import { getUserMedia } from '~/instaApi.server';
 import { Media } from './first-post';
+import { decrypt, encrypt } from '~/crypto.server';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get('Cookie'));
@@ -15,14 +16,16 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const user = JSON.parse(auth);
 
-  const accessToken = await kv.get<string>(user.id);
+  const accessToken = decrypt((await kv.get<string>(user.id)) || '');
 
   if (!accessToken) {
     // TODO session flash?
     return redirect('/');
   }
 
-  const firstPostFromKv = await kv.get<Media>(`${user.id}-first-post`);
+  const firstPostFromKv = JSON.parse(
+    decrypt((await kv.get<string>(`${user.id}-first-post`)) || '')
+  ) as Media;
 
   if (firstPostFromKv) {
     return json({
@@ -53,7 +56,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const randomPost = userMediaData.data[randomIndex];
 
     if (!hasMore && lastPostInList) {
-      await kv.set(`${user.id}-first-post`, lastPostInList, { ex: 60 * 30 }); // 30 minutes
+      await kv.set(
+        `${user.id}-first-post`,
+        encrypt(JSON.stringify(lastPostInList)),
+        {
+          ex: 60 * 30,
+        }
+      ); // 30 minutes
     }
 
     return json({

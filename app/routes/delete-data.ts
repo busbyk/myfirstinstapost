@@ -1,6 +1,6 @@
 import { LoaderFunctionArgs, redirect } from '@remix-run/node';
 import { kv } from '@vercel/kv';
-import { destroySession, getSession } from '~/auth';
+import { destroySession, getSession } from '~/auth.server';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const session = await getSession(request.headers.get('Cookie'));

@@ -2,7 +2,7 @@ import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import { Form, useLoaderData } from '@remix-run/react';
 import qs from 'qs';
 import { json, redirect } from '@remix-run/node';
-import { getSession } from '~/auth';
+import { getSession } from '~/auth.server';
 
 const INSTAGRAM_APP_ID = process.env.INSTAGRAM_APP_ID ?? '';
 const INSTAGRAM_REDIRECT_URI = process.env.INSTAGRAM_REDIRECT_URI ?? '';
