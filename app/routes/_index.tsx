@@ -79,14 +79,34 @@ export default function Index() {
           </p>
         </div>
       </div>
+      <div className="border-2 border-red-700 bg-red-400 p-5 rounded-xl space-y-2">
+        <h2 className="font-bold text-xl pb-2">Project Dead 😵</h2>
+        <p>
+          Unfortunately Meta deprecated their Instagram Basic Display API on
+          December 4th, 2024.
+        </p>
+        <p>
+          Their replacement API only works for business or creator Instagram
+          accounts so I don{"'"}t think it{"'"}s worth refactoring this.
+        </p>
+        <p>
+          Get in touch if you want something like this or need freelance dev
+          work:{' '}
+          <a href="https://www.kellenbusby.com" className="hover:underline">
+            kellenbusby.com
+          </a>
+          .
+        </p>
+      </div>
       <Form method="post" className="flex flex-col gap-2 w-fit">
         <button
           type="submit"
-          className="border-theme-burgundy border rounded-md px-12 py-4 bg-theme-blue text-white font-bold text-2xl sm:text-4xl"
+          className="border-theme-burgundy border rounded-md px-12 py-4 bg-theme-blue text-white font-bold text-2xl sm:text-4xl opacity-70 cursor-not-allowed line-through"
+          disabled
         >
           Let{"'"}s find it <span className="ml-1">🚀</span>
         </button>
-        <p className="text-xs max-w-max mx-auto text-gray-700">
+        <p className="text-xs max-w-max mx-auto text-gray-700 line-through">
           This will redirect you to Instagram to grant <br />
           us permission to scroll through your feed.
         </p>
