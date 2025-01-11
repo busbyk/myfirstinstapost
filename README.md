@@ -1,12 +1,14 @@
 # myfirstinstapost
 
+> **Note:** This project is no longer active due to Meta deprecating their Instagram Basic Display API on December 4th, 2024.
+
+A weekend project that scrolls through your Instagram posts to show your first post while displaying random posts along the way.
+
+## Tech
+
 Remix app
 No DB
 Meta app
-
-## Meta app
-
-https://developers.facebook.com/apps/680027463781126/dashboard/?business_id=1655332768568832
 
 ## Getting Started
 
